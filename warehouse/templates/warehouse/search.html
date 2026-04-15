@@ -1,0 +1,130 @@
+<!doctype html>
+{% load static %}
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Warehouse — Label Generators</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <style>
+    body { font-family: Arial, Helvetica, sans-serif; padding: 18px; color: #111; margin: 0; }
+    .container { max-width: 900px; margin: 0 auto; }
+    form { margin-bottom: 18px; }
+    input[type="text"] { padding: 8px; font-size: 14px; width: 260px; }
+    button { padding: 6px 10px; font-size: 14px; }
+
+    .label {
+      width: 100mm;
+      height: 50mm;
+      font-family: Segoe UI Variable, Verdana, sans-serif;
+      padding: 0;
+      text-align: center;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      box-sizing: border-box;
+    }
+
+    @font-face {
+      font-family: Code128;
+      src: url("{% static 'warehouse/fonts/code128.ttf' %}") format("truetype");
+      }
+    
+   
+    .barcode-text {
+      font-family: Code128;
+      font-size: 45pt;
+      transform: scaleX(2);
+      transform-origin: center;
+      }
+    
+    .barcode {
+      display: flex;
+      justify-content: center;
+      
+      transform-origin: center;
+      width: 100%;
+    }
+
+    .label .code { font-weight: bold; font-size: 20pt; margin-top: 1.5mm; margin-bottom: 1.5mm;  }
+    .label .desc { font-size: 12pt; margin-bottom: 1.5mm; word-break: break-word; max-width: 94mm; }
+    .label .bin { font-size: 14pt; margin-bottom: 1.5mm; }
+
+       
+    .no-print { margin-top: auto; }
+    .message { color: darkred; margin-top: auto; }
+    
+    @page {
+      size: 100mm 50mm;
+      margin: 0;
+    }
+  
+  @media print {
+    @page {
+      size: 100mm 50mm;
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    body * {
+      visibility: hidden;
+    }
+
+    #label, #label * {
+      visibility: visible;
+    }
+
+    #label {
+      position: fixed;
+      left: 0;
+      top: 4mm;
+      width: 100mm;
+      height: 50mm;
+      margin: 0;
+      padding: 0;
+      background: white;
+    }
+
+    .no-print {
+      display: none !important;
+    }
+  }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Label Generator</h1>
+
+    <form method="get" action="">
+      {{ form.product_code.label_tag }}
+      {{ form.product_code }}
+      <button type="submit">Search</button>
+    </form>
+
+    {% if message %}
+      <div class="message">{{ message }}</div>
+    {% endif %}
+
+    {% if result %}
+      <div class="label" id="label">
+        <div class="code">{{ result.product_code }}</div>
+        <div class="desc">{{ result.description }}</div>
+        <div class="bin">{{ result.bin_location }}</div>
+        <div class="barcode"> 
+          <div class="barcode-text">{{ result.encoded }}</div>
+      </div>
+
+      <div class="no-print">
+        <button onclick="window.print()">Print Label</button>
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
