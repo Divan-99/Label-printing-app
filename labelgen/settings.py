@@ -1,34 +1,28 @@
-"""
-Django settings for labelgen project.
-"""
-
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-REPLACE_THIS_WITH_YOUR_OWN'
+SECRET_KEY = 'django-insecure-iscar-labelgen-change-this-in-production-2026'
 
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://label.sa.iscar.com',
+    'http://10.59.0.5:8000',
+    'http://localhost:8000',
+]
+
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
     'django.contrib.staticfiles',
     'warehouse',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -41,10 +35,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
@@ -52,28 +43,18 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'labelgen.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
-
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
-
 STATIC_URL = 'static/'
 
-# Optional explicit Excel path. Update to your actual location if needed.
-DATA_XLSX_PATH = r"C:\Users\ISSA-OCRD\OneDrive - IMC\Desktop\Label Web Page Django\warehouse\data.xlsx"
+# ---------------------------------------------------------------------------
+# Excel data source
+# Place your data.xlsx file in the warehouse/ folder, OR set an absolute path:
+# DATA_XLSX_PATH = r"C:\path\to\your\data.xlsx"
+# ---------------------------------------------------------------------------
+DATA_XLSX_PATH = None   # None = use warehouse/data.xlsx (relative to project)
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# ---------------------------------------------------------------------------
+# Label printer — Easy-Coder 3400c
+# ZPL sent directly via TCP to port 9100, no browser dialog
+# ---------------------------------------------------------------------------
+LABEL_PRINTER_IP   = '10.59.0.34'
+LABEL_PRINTER_PORT = 9100

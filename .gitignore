@@ -1,6 +1,31 @@
+# Python
 __pycache__/
-*.pyc
-db.sqlite3
-*.log
-.env
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+
+# Virtual environment
 venv/
+.venv/
+env/
+
+# Django
+*.log
+db.sqlite3
+/static/
+/media/
+
+# Excel data (contains sensitive stock data - add manually)
+warehouse/data.xlsx
+*.xlsx
+*.xls
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
